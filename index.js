@@ -32,6 +32,15 @@ async function run() {
             res.send(result);
         })
 
+        // find by id.........
+        app.get('/blogbyid/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: ObjectId(id) }
+            console.log(filter, "id")
+            const blog = await blogCollection.findOne(filter);
+            res.send(blog)
+        })
+
         //  find blog filter status........
         app.get('/blogbystatus', async (req, res) => {
             const query = { status: "approve" }
@@ -85,6 +94,15 @@ async function run() {
             const result = await cursor.toArray();
             res.send(result);
         })
+        // find all experiences........
+        app.get('/expeByQuery/:category', async (req, res) => {
+            const category = req.params.category;
+            const filter = { category: category }
+            console.log(filter, "query")
+            const cursor = experienceCollection.find(filter);
+            const result = await cursor.toArray();
+            res.send(result);
+        })
 
         // insert  experience...........
         app.post('/expe', async (req, res) => {
@@ -99,6 +117,8 @@ async function run() {
             const result = await userCollection.insertOne(user)
             res.send(result)
         })
+
+
         // find user by email..........
         app.get('/user/:email', async (req, res) => {
             const email = req.params.email;
